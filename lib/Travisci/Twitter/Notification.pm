@@ -5,7 +5,40 @@ use warnings;
 
 our $VERSION = "0.01";
 
+use JSON;
+use Plack::Request;
+use Plack::Runner;
+use Travisci::Twitter::Notification::Post;
+use Class::Accessor::Lite (
+    new => 1,
+);
 
+sub to_app {
+    my $self = shift;
+    my $config = shift;
+    sub {
+	my $env = shift;
+	my $req = Plack::Request->new($env);
+	if  ($req->method eq 'POST' and my $payload = eval { decode_json($req->param('payload'))}) {
+
+	    my $message = $payload->{'message'};
+	    
+	    my $tw = Travisci::Twitter::Notification::Post->new($config);
+	    $tw->post($message);
+
+	    [200, [], ['OK']];
+	} else {
+	    [400, [], ['BAD REQUEST']];
+	}
+    };
+}
+
+sub run {
+    my $self= shift;
+    my $config = shift;
+    my $runner = Plack::Runner->new();
+    $runner->run($self->to_app($config));
+}
 
 1;
 __END__

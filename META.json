@@ -1,7 +1,7 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Travisci twitter notification server",
    "author" : [
-      "@gmail.com>"
+      "Hiroki Matsuo <xornelius0313@gmail.com>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v2.1.1, CPAN::Meta::Converter version 2.142060",
@@ -15,6 +15,7 @@
    "name" : "Travisci-Twitter-Notification",
    "no_index" : {
       "directory" : [
+	 "bin",
          "t",
          "xt",
          "inc",
@@ -42,11 +43,17 @@
       },
       "runtime" : {
          "requires" : {
+	    "Class::Accessor::Lite" : "0",
+	    "JSON" : "0",
+	    "Plack::Request" : "0",
+	    "Plack::Runner" : "0",
             "perl" : "5.008001"
          }
       },
       "test" : {
          "requires" : {
+	    "HTTP::Request::Common" : "0",
+	    "Plack::Test" : "0",
             "Test::More" : "0.98"
          }
       }
